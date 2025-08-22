@@ -1,0 +1,126 @@
+﻿@model IEnumerable<FinanceApp.Models.Expences>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="fw-bold text-primary">💰 My Expenses</h1>
+        <a asp-action="Create" class="btn btn-success shadow-sm">
+            ➕ Add New Expense
+        </a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white fw-semibold">
+            Expense Records
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover table-bordered m-0">
+                <thead class="table-light text-center">
+                    <tr>
+                        <th>Description</th>
+                        <th>Amount (₹)</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th style="width: 200px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var i in Model)
+                        {
+                            <tr>
+                                <td>@i.Description</td>
+                                <td class="text-success fw-bold">@i.Amount.ToString("N2")</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@i.Category</span>
+                                </td>
+                                <td>@i.Date.ToString("yyyy-MM-dd")</td>
+                                <td class="text-center">
+                                    <a asp-action="Details" asp-route-id="@i.Id" class="btn btn-sm btn-outline-primary me-1">👁 Details</a>
+                                    <a asp-action="Edit" asp-route-id="@i.Id" class="btn btn-sm btn-outline-warning me-1">✏ Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@i.Id" class="btn btn-sm btn-outline-danger">🗑 Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-3">
+                                No expenses found. Start by adding one!
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-success text-white fw-semibold">
+            📊 Expenses Overview
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-center">
+                <div style="width: 500px; height: 350px;">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        fetch('/Expences/GetChartData')
+            .then(response => response.json())
+            .then(data => {
+                if (!data || data.length === 0) {
+                    ctx.font = "16px Arial";
+                    ctx.fillText("No expense data available", 50, 50);
+                    return;
+                }
+
+                new Chart(ctx, {
+                    type: 'doughnut', 
+                    data: {
+                        labels: data.map(d => d.category),
+                        datasets: [{
+                            label: "Total Expenses",
+                            data: data.map(d => d.total),
+                            backgroundColor: [
+                                "#4e79a7", "#f28e2b", "#e15759", "#76b7b2",
+                                "#59a14f", "#edc949", "#af7aa1", "#ff9da7"
+                            ],
+                            borderColor: "#fff",
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    boxWidth: 15,
+                                    padding: 15
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `₹${context.formattedValue}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            })
+            .catch(err => console.error("Error fetching chart data:", err));
+    });
+</script>
