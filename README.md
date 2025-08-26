@@ -31,7 +31,7 @@
 - 🎯 **Budgets** with remaining-amount view  
 - 🔎 **Search & filter** by date, category, notes  
 - 📈 **Summary cards** (month/year/overall)  
-- 💾 **SQL Server** persistence (LocalDB or SQL Server)  
+- 💾 **SQL Server** persistence (SQL Server)  
 - 🛡️ **Validation** for safe inputs  
 
 ---
@@ -39,9 +39,9 @@
 ## 🧱 Tech Stack
 
 - **.NET (C#)** application  
-- **SQL Server / LocalDB** for storage  
-- **Razor Pages / MVC or Web Forms UI** (depending on your project template)  
-- **CSS + a bit of JavaScript** for interactivity  
+- **SQL Server for storage  
+- **Razor Pages and MVC**
+- **Bootstrap + a bit of JavaScript** for interactivity  
 
 ---
 
@@ -54,7 +54,7 @@ Fin-Track/
 ├─ FinanceApp/ # Main application project
 │ ├─ Models/ # C# models (Transaction, Category, Budget, etc.)
 │ ├─ Data/ # Db context / repository / SQL helpers
-│ ├─ Controllers/ or Pages/ # MVC Controllers or Web Forms pages
+│ ├─ Controllers/ or Pages/ # MVC Controllers and razor pages
 │ ├─ Views/ or *.aspx # UI (Razor views or Web Forms)
 │ ├─ wwwroot/ or Content/ # CSS/JS/static assets
 │ ├─ appsettings.json or Web.config # Connection string & config
