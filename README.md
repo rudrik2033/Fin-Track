@@ -38,8 +38,8 @@
 
 ## 🧱 Tech Stack
 
-- **.NET (C#)** application  
-- **SQL Server for storage  
+- **.NET (C#)** application**
+- **SQL Server for storage**
 - **Razor Pages and MVC**
 - **Bootstrap + a bit of JavaScript** for interactivity  
 
